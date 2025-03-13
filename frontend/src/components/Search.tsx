@@ -4,17 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import api from "../utils/post";
+import { customer_data_type } from "../utils/types";
 interface props {
-  is_search_open: any;
-  set_is_search_open: any;
+  is_search_open: boolean;
+  set_is_search_open: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const Search = ({ is_search_open, set_is_search_open }: props) => {
   const navigate = useNavigate();
-  const [search_id, set_search_id] = useState();
-  const [search_data, set_search_data] = useState<any>();
+  const [search_id, set_search_id] = useState<string>();
+  const [search_data, set_search_data] = useState<customer_data_type[]>([]);
   const [not_found, set_not_found] = useState<boolean>(false);
 
-  const close_search_pup_up = (id: any) => {
+  const close_search_pup_up = (id: number) => {
     navigate(`customer_details_id/${id}/`);
     set_is_search_open(!is_search_open);
     set_search_data([]);
@@ -26,7 +27,7 @@ const Search = ({ is_search_open, set_is_search_open }: props) => {
       try {
         const response = await api.get(`get_customer_by_id=${search_id}/`);
         set_search_data(response.data);
-      } catch (error: any) {
+      } catch (error: unknown) {
         set_not_found(true);
       }
     }
@@ -50,15 +51,15 @@ const Search = ({ is_search_open, set_is_search_open }: props) => {
           <input
             type="number"
             className="w-full py-2 px-5 outline-none"
-            onChange={(e: any) => set_search_id(e.target.value)}
-            onKeyDown={(e: any) => handleKeyDown(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_search_id(e.target.value)}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e)}
           />
           <FiSearch className="text-xl text-gray-500" />
         </div>
         <div className="w-full">
           <table className="w-full text-center mt-2 ">
             <tbody>
-              {search_data?.map((items: any, index: any) => {
+              {search_data?.map((items: customer_data_type, index: number) => {
                 return (
                   <tr
                     className={`cursor-pointer bg-gray-200 rounded-lg`}

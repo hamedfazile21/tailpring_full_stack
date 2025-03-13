@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
 import Home from "./page/Home";
 import Navbar from "./components/Navbar";
 import Customer_details from "./page/Customer_details";
 import api from "./utils/post";
+import { customer_data_type } from "./utils/types";
+
 const App = () => {
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<customer_data_type[]>([]);
   useEffect(() => {
-    async function get_data() {
+    const get_data = async () => {
       try {
         const response = await api.get("customer_list/");
         setData(response.data);
+        return <Home data={data} />;
       } catch (error) {}
-    }
+    };
     get_data();
   }, []);
   return (

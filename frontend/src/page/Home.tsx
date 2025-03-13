@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { customer_data_type } from "../utils/types";
 interface props {
-  data: any;
+  data : customer_data_type[]
 }
-const Home = ({ data }: props) => {
+
+const Home = ({data}:props) => {
   let navigate = useNavigate();
   return (
     <div className="w-full flex items-center justify-center">
@@ -29,7 +31,7 @@ const Home = ({ data }: props) => {
             </tr>
           </thead>
           <tbody>
-            {data?.map((items: any, index: any) => {
+            {data && data.map((items: customer_data_type, index: number) => {
               return (
                 <tr
                   className={`cursor-pointer`}

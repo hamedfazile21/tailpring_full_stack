@@ -4,24 +4,26 @@ import { IoIosClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import Search from "./Search";
 import api from "../utils/post";
+import { customer_data_type } from "../utils/types";
 interface props {
-  setData: any;
-  data: any;
+  setData: React.Dispatch<React.SetStateAction<customer_data_type[]>>;
+  data: customer_data_type[];
 }
 const Navbar = ({ setData, data }: props) => {
   const [is_pup_up_open, set_is_pup_up_open] = useState<boolean>(false);
-  const [is_search_open, set_is_search_open] = useState<boolean>();
+  const [is_search_open, set_is_search_open] = useState<boolean>(false);
 
   const add_customer = () => {
     set_is_pup_up_open(!is_pup_up_open);
   };
   const navigate = useNavigate();
-  const post_data = async (e: any) => {
+
+  const post_data = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const fromData = new FormData(e.target);
-
+    const fromData = new FormData(e.target as HTMLFormElement);
     const fromObject = Object.fromEntries(fromData.entries());
+
     const response = await api.post("add_customer/", fromObject);
     setData([...data, response.data]);
     navigate(`customer_details_id/${response.data.id}/`);

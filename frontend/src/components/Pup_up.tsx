@@ -3,10 +3,11 @@ import { CgDanger } from "react-icons/cg";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../utils/post";
 import { IoIosClose } from "react-icons/io";
+import { customer_data_type } from "../utils/types";
 interface props {
-  request_p: any;
-  set_customer: any;
-  default_data: any;
+  request_p: string;
+  set_customer: React.Dispatch<React.SetStateAction<boolean>>;
+  default_data: customer_data_type | undefined;
 }
 
 const Pup_up = ({ request_p, set_customer, default_data }: props) => {
@@ -21,15 +22,15 @@ const Pup_up = ({ request_p, set_customer, default_data }: props) => {
       console.log(error);
     }
   };
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent page reload
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
 
     const formObject = Object.fromEntries(formData.entries());
     try {
       await api.put(`customer_id=${id}/`, formObject);
       location.reload();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(error);
     }
   };

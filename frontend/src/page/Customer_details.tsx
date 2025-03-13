@@ -7,17 +7,17 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import Pup_up from "../components/Pup_up";
 import api from "../utils/post";
-
-
+import { customer_data_type, customer_size_data_type } from "../utils/types";
 
 const Customer_details = () => {
   const { id } = useParams();
-  const [customer_data, set_customer_data] = useState<any>();
-  const [size_data, set_size_data] = useState<any>();
+  const [customer_data, set_customer_data] = useState<customer_data_type>();
+  const [size_data, set_size_data] = useState<customer_size_data_type>();
   const [error, set_error] = useState<boolean>(true);
   const [is_update_pup_up_open, set_is_update_pup_up_open] =
-    useState<boolean>();
-  const [customer_pup_up, set_customer_pup_up] = useState<boolean>();
+    useState<boolean>(false);
+  const [customer_pup_up, set_customer_pup_up] = useState<boolean>(false);
+
   useEffect(() => {
     const get_size_by_id = async () => {
       try {
@@ -46,8 +46,8 @@ const Customer_details = () => {
     get_size_by_id();
   }, []);
 
-  const [content, set_content] = useState<any>();
-  const pup_up = (verify: any) => {
+  const [content, set_content] = useState<string>("");
+  const pup_up = (verify: string) => {
     set_customer_pup_up(!customer_pup_up);
     if (verify === "delete") {
       set_content("delete");
@@ -130,7 +130,7 @@ const Customer_details = () => {
                   <h3 className="text-sm w-1/5">اندازه پهلوها</h3>
                   <div className="py-1 text-sm font-bold bg-gray-300 rounded-md w-full text-center my-2">
                     {size_data?.side_hight}
-                  </div>
+                  </div>any
                 </div>
                 <div className="flex flex-row items-center w-[560px] border border-gray-300 py-1 px-4 rounded-lg ">
                   <h3 className="text-sm w-1/5">قطر تومبان</h3>
@@ -173,7 +173,11 @@ const Customer_details = () => {
         ""
       )}
       {customer_pup_up == true ? (
-        <Pup_up default_data={customer_data} request_p={content} set_customer={set_customer_pup_up} />
+        <Pup_up
+          default_data={customer_data}
+          request_p={content}
+          set_customer={set_customer_pup_up}
+        />
       ) : (
         ""
       )}

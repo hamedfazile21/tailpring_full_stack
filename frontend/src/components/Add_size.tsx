@@ -4,23 +4,24 @@ import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import name from "../utils/list";
 import api from "../utils/post";
+import { customer_data_type } from "../utils/types";
 interface props {
-  user_data: any;
+  user_data: customer_data_type | undefined;
 }
 
 const Add_size = ({ user_data }: props) => {
   const [is_pup_up_open, set_is_pup_up_open] = useState<boolean>(false);
   const { id } = useParams();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent page reload
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
 
     const formObject = Object.fromEntries(formData.entries());
     try {
       await api.post("add_size/", formObject);
       location.reload();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(error);
     }
   };

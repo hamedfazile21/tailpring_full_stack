@@ -10,7 +10,7 @@ from django.shortcuts import get_list_or_404
 @api_view()
 def customer_list(request):
     queryset = Customer.objects.all().select_related('sizes')
-    serializer = SizeWithCustomerSerializer(queryset , many=True)
+    serializer = CustomerSerializer(queryset , many=True)
     return Response(serializer.data)
 
 
